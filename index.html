@@ -80,8 +80,25 @@
 	  return Math.floor(Math.random() * array.length)
 	}
 	
+	function getParameterByName(name, url) {
+	    if (!url) url = window.location.href;
+	    name = name.replace(/[\[\]]/g, "\\$&");
+	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+	
+	
+	
 	gslink = 'https://spreadsheets.google.com/feeds/list/1rRTqfZ1r9V2ziePmNfcslfUqiAR3lar0GQbV61h18i0/1/public/basic?alt=json';
 	
+    gswords=getParameterByName('id');
+ 
+    if (gswords){gslink = 'https://spreadsheets.google.com/feeds/list/'+gswords+'/1/public/basic?alt=json';}
+
+
 	
 	$.ajax({
 	  url: gslink,
@@ -102,7 +119,7 @@
 		   // var option1 = x[1]; // "option-1: Use"
 			//var option2 = x[2]; // "option-2: as a metaphor for"
 
-		    var thistech = thistech.split(' ')[1];  
+		    var thistech = thistech.split(':')[1];  
 		   // var option1 = option1.split(' ')[1];  
 			//  var option2 = option2.split(' ')[1];   	
  		
