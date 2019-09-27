@@ -72,21 +72,62 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
     
     <script>
-
+		var metaphor=[];
+		var tech=[];
 	 $.backstretch("background.jpg");
 
 	function random(array) {
 	  return Math.floor(Math.random() * array.length)
 	}
+	
+	gslink = 'https://spreadsheets.google.com/feeds/list/1rRTqfZ1r9V2ziePmNfcslfUqiAR3lar0GQbV61h18i0/1/public/basic?alt=json';
+	
+	
+	$.ajax({
+	  url: gslink,
+  dataType: 'json',
+   complete: function(xhr, textStatus) {
+	    //called when complete
+	  },
+  success: function(data, textStatus, xhr) {
+	  console.log(data);
+	  var thelist="";
+	  console.log("ENTRY 0: " +data['feed']['entry'][0]['title'] );
+	  for (var i = 0; i < data['feed']['entry'].length; i++) {
+		  theword= data['feed']['entry'][i]['title']['$t'] ;
+		  thetech= data['feed']['entry'][i]['content']['$t'];
+		  
+		  var x = thetech.split(', '); //   "tech: learning analytics, option-1: Use, option-2: as a metaphor for"
+		    var thistech = x[0]; // "tech: learning analytics"
+		   // var option1 = x[1]; // "option-1: Use"
+			//var option2 = x[2]; // "option-2: as a metaphor for"
+
+		    var thistech = thistech.split(' ')[1];  
+		   // var option1 = option1.split(' ')[1];  
+			//  var option2 = option2.split(' ')[1];   	
+ 		
+		metaphor.push( theword);
+		tech.push(thistech);
+	  } 
+	  console.log(metaphor);
+	   console.log(tech);
+	  generate();
+	  },
+  error: function(xhr, textStatus, errorThrown) {
+	    //called when there is an error
+	  }
+});
+
 
 	function generate() {
 		  // lifted somewhat from https://glitch.com/~spark-chipmunk
 	
 		  // arrays of metaphors- if a single quote, a apostrophe needed, enter as \'
-	  let metaphor = ['baking a cake', 'a houseplant', 'running a marathon', 'raising a puppy', 'quantum physics', 'visiting an unknown country','the history of porcelain manufacture','the development of New York graffiti styles','the Corn Laws','the Loch Ness monster myth','the CB radio craze of the 70s','the Gargoyles of the Notre Dame','an all you can eat “Around the world” buffet','the growth of interest in vinyl records','a comfortable old coat','knitting','Homers The Iliad','gardening','the ecosystem of a small island','your favourite film','the structure of a typical horror film', 'chasing a cat', 'finding a big stick', 'a local castle', 'real hockey'];
-  
+	  //let metaphor = ['baking a cake', 'a houseplant', 'running a marathon', 'raising a puppy', 'quantum physics', 'visiting an unknown country','the history of porcelain manufacture','the development of New York graffiti styles','the Corn Laws','the Loch Ness monster myth','the CB radio craze of the 70s','the Gargoyles of the Notre Dame','an all you can eat “Around the world” buffet','the growth of interest in vinyl records','a comfortable old coat','knitting','Homers The Iliad','gardening','the ecosystem of a small island','your favourite film','the structure of a typical horror film', 'chasing a cat', 'finding a big stick', 'a local castle', 'real hockey'];
+	  
+   
   	  // arrays of tech- if a single quote, a apostrophe needed, enter as \'
-	  let tech = ['learning analytics', 'VLE', 'blockchain', 'OER', 'MOOCs', 'personalised learning','Artificial Intelligence','open textbooks','automated assessment','MCQs','digital natives','connectivism','blogging','plagiarism detection sites','lecture capture','Flipped Learning','Facebook','academics use of Twitter','open access publishing','mobile learning','learning styles','LMS','e-portfolios','Wikipedia','student-generated content'];
+	  //let tech = ['learning analytics', 'VLE', 'blockchain', 'OER', 'MOOCs', 'personalised learning','Artificial Intelligence','open textbooks','automated assessment','MCQs','digital natives','connectivism','blogging','plagiarism detection sites','lecture capture','Flipped Learning','Facebook','academics use of Twitter','open access publishing','mobile learning','learning styles','LMS','e-portfolios','Wikipedia','student-generated content'];
 
 
 	  let options = [`Use ${metaphor[random(metaphor)]} as a metaphor for ${tech[random(tech)]}. `, 
@@ -102,7 +143,7 @@
 	}
 	
 	$(document).ready(function(){	
-		generate();
+		//generate();
 		
 		$( "#gimme" ).click(function() {
 			// do it again
