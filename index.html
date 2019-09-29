@@ -128,9 +128,9 @@
 		    var thistech = thistech.split(':')[1];  
 		   // var option1 = option1.split(' ')[1];  
 			//  var option2 = option2.split(' ')[1];   	
- 		
-		metaphor.push( theword);
-		tech.push(thistech);
+ 			//if first column is empty it will contain Row: so
+		if (!theword.includes('Row:')){metaphor.push( theword);}
+		if (thistech!==undefined){tech.push(thistech);}
 	  } 
 	  console.log(metaphor);
 	   console.log(tech);
